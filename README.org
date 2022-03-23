@@ -1,0 +1,195 @@
+* Proyecto de VueJS: Cliente SPA para API REST
+  En esta práctica crearemos una [[https://es.wikipedia.org/wiki/Single-page_application][aplicación web de una sola página]] (SPA, /Single Page Application/) para gestionar una *base de datos multimedia*.
+
+  La aplicación hará uso de una [[https://es.wikipedia.org/wiki/Transferencia_de_Estado_Representacional][API REST]] ya implementada. Esta API trabajará con un formato de intercambio de datos específico denominado *Collection + JSON*.
+
+  Se programará un cliente SPA mediante *componentes de un solo archivo* de *VueJS*. Para el formato visual se utilizará la librería [[https://getbootstrap.com/][Bootstrap]]. Se utilizará la tecnología [[https://es.wikipedia.org/wiki/AJAX][AJAX]] para enviar y recibir datos a la API en formato *Collection + JSON*.
+  
+** Videotutorial sobre REST y Hypermedia
+En este enlace puedes consultar un videotutorial sobre el funcionamiento de una API REST basada en Hypermedia:
+- https://youtu.be/5IYVXBdNoYs
+  
+** Recursos de referencia
+1. Fundamentos de la arquitectura REST (Wikipedia): [[https://en.wikipedia.org/wiki/Representational_state_transfer][enlace]].
+2. Arquitectura *HATEOAS* (Wikipedia): [[https://en.wikipedia.org/wiki/HATEOAS][enlace]].
+3. Formato de datos *JSON* (Wikipedia): [[https://en.wikipedia.org/wiki/JSON][enlace]]. 
+4. Especificación del formato de datos *Collection + JSON*: [[http://amundsen.com/media-types/collection/format/][enlace]].
+5. Ejemplos del formato de datos *Collection + JSON*: [[http://amundsen.com/media-types/collection/examples/][enlace]].
+
+** Archivos de la práctica
+   El repositorio incluye un esqueleto de aplicación creado con la [[https://cli.vuejs.org/][interfaz de línea de comandos de VueJS]]. En él se incluyen también algunas funciones para realizar peticiones de datos a URLs remotas a través de AJAX. El código está convenientemente *comentado*, por lo que es recomendable inspeccionarlo antes de comenzar para conocer su funcionamiento.
+   
+   El repositorio está organizado de la siguiente manera:
+   - Archivo ~package.json~. Contiene la configuración del proyecto VueJS. Se trata de un proyecto de [[https://nodejs.org/es/][Node]]. Se crea por defecto al crear el proyecto de VueJS.
+   - Archivo ~babel.config.js~. Archivo de configuración de [[https://babeljs.io/docs/en/next/][Babel]], una herramienta de compilación de JavaScript. No lo utilizaremos. Se crea por defecto al crear el proyecto de VueJS.
+   - Carpeta ~public~. Contiene los *archivos estáticos* de la aplicación Vue. En esta carpeta se deberán almacenar todos los archivos estáticos que se necesiten (imágenes, archivos CSS,...).
+     - Archivo ~public/index.html~. Contiene el fichero HTML principal de la aplicación. En él se define la etiqueta ~<div>~ que almacenará la aplicación VueJS. Es el sitio indicado para *incluir librerías CSS*, como Bootstrap.
+   - Carpeta ~src~. Contiene el código fuente del proyecto de VueJS. Será la *carpeta principal de trabajo*. Almacena los ficheros ~.vue~ que definen los *componentes de un solo archivo* de la aplicación.
+     - Archivo ~main.js~. Archivo que define la *aplicación VueJS*. Su única tarea es crear una aplicación VueJS y cargar en ella el *componente principal de la aplicación*, almacenado en el archivo ~App.vue~.
+     - Archivo ~App.vue~. El *componente principal de la aplicación*. Es el *punto de entrada* para realizar la práctica. Su tarea será la de definir el *esquema y el funcionamiento general* de la aplicación web y *cargar los componentes secundarios* que necesite para su funcionamiento.
+     - Carpeta ~components~. Contiene los *componentes secundarios* que utilizará la aplicación. *Todos los componentes* que se creen estarán definidos en archivos ~.vue~ en esta carpeta.
+     - Carpeta ~assets~. Carpeta que almacena los archivos estáticos que utilizarán los componentes de VueJS. Puede utilizarse junto con la carpeta ~public~, utilizarse por si sola o no utilizarse en absoluto. No la utilizaremos en esta práctica.
+   - Carpeta ~dist~. Contiene el código *compilado* listo para ser *publicado en un servidor web*. Se generará si se ejecuta el comando ~npm run build~. Como es el resultado de una compilación, está excluida del repositorio en el archivo ~.gitignore~.
+
+** Requisitos de software
+Para poder realizar esta práctica y que funcione adecuadamente el entorno de test será necesario *instalar el siguiente software* en el equipo:
+- Navegador [[https://www.google.com/intl/es/chrome/][Chrome]].
+- Entorno de ejecución [[https://nodejs.org/es/][NodeJS]].
+
+** Preparación
+1. Instalar los requisitos de software indicados
+2. Abrir un terminal
+3. Clonar el repositorio al equipo local mediante ~git clone~
+4. Acceder a la carpeta del repositorio
+5. Ejecutar el comando ~npm install~. Este comando instalará todas las librerías de Node necesarias para probar la aplicación VueJS. Dichas librerías se guardarán en una carpeta con nombre ~node_modules~ dentro del repositorio. Nótese que dicha carpeta está excluida del repositorio en el archivo ~.gitignore~.
+6. Ejecutar el comando ~npm run serve~ para lanzar el servidor de test de VueJS. Una vez lanzado el servidor podremos visualizar la aplicación en la URL [[http://localhost:8080/]]. Los *cambios* que se realicen en el código fuente de la aplicación *se reflejarán automáticamente* sin necesidad de reiniciar el servidor.
+7. Si se desea desplegar la aplicación en un servidor web hay que *compilar* previamente la aplicación VueJS para que funcione correctamente. Para ello habrá que ejecutar el comando ~npm run build~. Una vez finalizado se deberá copiar el contenido de la carpeta ~dist~ al servidor y acceder a la ruta correspondiente para utilizarla.
+
+** Tareas a realizar
+   Esta práctica tiene como objetivo *crear una aplicación VueJS compleja* a través de componentes de un solo archivo. La aplicación es una [[https://es.wikipedia.org/wiki/Single-page_application][aplicación de página única]] que permitirá al usuario interactuar con una API que trabaja con el formato de datos *Collection + JSON*.
+   
+   La API está pensada para gestionar una biblioteca multimedia. Gestionará *dos tipos de elementos*:
+   - Libros
+   - Películas
+   
+   Se podrán realizar tareas *CRUD* (*lectura, creación, actualización y borrado*) de ambos tipos de elementos.
+
+   El código fuente proporcionado incluye varias secciones identificadas con la etiqueta *TODO* para indicar los puntos donde se debe actuar. También se incluyen numerosos *comentarios* explicativos.
+
+   Se utilizará [[https://getbootstrap.com/][Bootstrap]] para el formato visual.
+   
+*** Bootstrap
+    Se deberá cargar la librería CSS de Bootstrap en el archivo ~public/index.html~
+    
+*** API Collection + JSON
+    La API que se utilizará está disponible en esta URL: https://zzkr1nkz5b.execute-api.eu-west-1.amazonaws.com/latest. Es recomendable navegar a través de ella para comprender su funcionamiento.
+    
+    #+begin_quote
+    ¡IMPORTANTE! La API será compartida por todas las personas que estén realizando la práctica, por lo que se evitará en la medida de lo posible borrar todos los datos o poner textos o contenido inadecuado.
+    #+end_quote
+    
+**** Formato de datos
+     El formato [[http://www.amundsen.com/media-types/collection/][Collection + JSON]] es un formato de intercambio de datos (/media type/) basado en el principio [[https://en.wikipedia.org/wiki/HATEOAS][HATEOAS]]: /Hypermedia as the Engine of Application State/. Este tipo de formatos tiene como objetivo crear APIs que puedan ser descubiertas por los clientes. Algunas de las ventajas proporcionadas por este estilo de programación son:
+     - El cliente simplemente necesita el punto de entrada a la API: no hay necesidad de buscar en la documentación cada una de las *rutas* para realizar las acciones disponibles en la API. Esto se consigue utilizando *enlaces* además de *datos* en las respuestas de la API. Por ejemplo, en una API de un banco, si se realiza una petición para obtener los datos de una cuenta bancaria, el servidor puede responder exclusivamente con los datos de dicha cuenta (balance, nombre del titular, movimientos,...) o además puede incluir *enlaces a otras URL disponibles* que gestionen acciones relacionadas con la cuenta (transferencias, depósitos, retiradas de efectivo,...). De esta manera el desarrollador no necesita buscar las URLs en la documentación: el servidor le indicará directamente cuáles son esas URLs.
+     - El cliente es capaz de *componer automáticamente los datos necesarios para enviar con la petición*. Por ejemplo, el cliente es capaz de determinar qué campos son necesarios para dar de alta a un usuario: no es necesario acudir a la documentación para ver que se necesitan los campos ~name~ o ~email~, por ejemplo; la API proporciona una *plantilla* para que el cliente sea capaz de generar la petición con los campos necesarios.
+     
+El esquema de un objeto Collection + JSON que utilizaremos es el siguiente:       
+#+begin_src javascript
+  {
+      collection :
+      {
+          title : "Movie List",
+          type : "TIPO",
+          version : "1.0",
+          links : [ //Array de enlaces
+
+              {rel : "TIPO_DE_LINK", href : "URL del link", prompt : "TEXTO_DESCRIPTIVO_DEL_ENLACE_PARA_USUARIO"},
+
+              // Más enlaces
+
+          ],
+          items : [ //Array de items
+              {
+                  href : "https://...",  //URL del item
+                  data : [               //Array de datos de cada item
+
+                      {name : "NOMBRE_PROPIEDAD", value : "VALOR_PROPIEDAD", prompt : "DESCRIPTOR_PROPIEDAD_PARA_USUARIO", type : "TIPO_DATOS"},
+
+                      // Más datos del item...
+
+                  ]
+              },
+
+              // Más items...
+
+          ],
+          template : {                // Plantilla para crear / actualizar un ítem
+              data : [               //Array de datos de la plantilla
+
+                  {name : "NOMBRE_PROPIEDAD", value : "", prompt : "DESCRIPTOR_PROPIEDAD_PARA_USUARIO", type : "TIPO_DATOS"},
+
+                  // Más datos de la plantilla...
+
+              ]
+
+          }
+      }
+  }
+#+end_src
+
+Como puede observarse, el objeto ~collection~ tiene *4 propiedades*:
+- =title= - Almacena el título de la colección
+- =type= - Tipo de colección (qué tipo de datos almacena)
+- =version= - Versión del esquema de datos
+- =links= - Array de *enlaces* de la colección. Cada enlace tiene una URL, un nombre identificativo y un tipo.
+- =items= - Array de elementos de la colección. Cada elemento se denomina *item*.
+- =template= - *Plantilla* para crear o actualizar un elemento. El elemento =template= tiene una única propiedad, =data=, que es un array de parámetros necesarios para actualizar o crear un ítem. El formato del array =data= es igual al array =data= de cada ítem, salvo porque su campo =value= está vacío.
+
+Cada =item= de la colección tiene a su vez *2 propiedades*:
+- =href= - Almacena la URL del elemento
+- =data= - Array de datos del elemento. Un elemento puede tener 0 o más datos
+
+Por último, el formato de cada =dato= de la colección es un *objeto* con *3 propiedades*:
+- =name= - Nombre de la propiedad. Es un nombre único que un hipotético servidor utilizará para guardar los datos de manera organizada (posiblemente en una tabla de una base de datos; por tanto, la propiedad =name= estará relacionada con el campo de la tabla de la base de datos). Normalmente este campo contendrá texto *en minúsculas* y *sin espacios en blanco*.
+- =value= - Valor de la propiedad.
+- =prompt= - Texto descriptivo que se utilizará para indicar al usuario la descripción del dato. Este campo está pensado para almacenar texto formateado (mayúsculas y minúsculas, signos de puntuación y varias palabras) que vaya a ser mostrado al usuario.
+
+En el siguiente enlace puedes consultar algunos [[http://amundsen.com/media-types/collection/examples/][ejemplos del formato Collection + JSON]]. No utilizaremos la funcionalidad de =queries= por simplicidad.
+
+**** Interacción
+El formato *Collection + JSON* permite *cuatro tipos* de interacciones (no utilizaremos la funcionalidad de =queries= por simplicidad):
+- Acceder a un *enlace* para obtener un recurso Collection + JSON distinto. Esta operación corresponde a una operación *GET* HTTP.
+- Enviar una *plantilla* para *editar* un ítem. Esta operación corresponde a una operación *PUT* HTTP.
+- Enviar una *plantilla* para *crear* un nuevo ítem. Esta operación corresponde a una operación *POST* HTTP.
+- Enviar una petición para *borrar* un ítem. Esta operación corresponde a una operación *DELETE* HTTP.
+
+  Así, el cliente VueJS utilizará *4 funciones*. Dichas funciones estarán repartidas entre los distintos componentes de la aplicación. Son:
+- ~readCollection~ 
+- ~createItem~
+- ~editItem~
+- ~deleteItem~
+
+*** Diseño de la aplicación
+**** Variables de datos
+La aplicación definirá tantas variables de datos como sea necesario para su correcto funcionamiento. Como mínimo deberá definir *una variable par almacenar el objeto collection* que se esté procesando de la API.
+
+**** URLs de la API
+Las URLs que devuelve la API son *relativas a una URL de base*. Dicha URL base está disponible en la aplicación Vue en la variable global ~this.$APIURL~. De esta manera, si por ejemplo un enlace de la API apunta a ~/movies~, la URL estará disponible en this.$APIURL + "/movies". (Normalmente no será necesario utilizar literales, ya que la URL relativa estará almacenada en una variable).
+
+**** Plantilla
+La aplicación debe mostrar:
+- El *título de la colección*
+- Un *menú de navegación* que permita la navegación a través de la API. Para ello mostrará un enlace para cada elemento del array ~collection.links~.
+- Una *lista de cada uno de los ítems* disponibles en ~collection.items~. Junto a los datos del ítem se deberá mostrar *un botón para borrarlo* y algún medio *para editarlo*: puede ser un formulario que esté visible o un botón que muestre u oculte dicho formulario (en la línea con lo realizado en la segunda práctica de VueJS).
+  - Los datos del ítem están en su propiedad ~item.data~. Se deberá *mostrar cada dato de manera que se visualice adecuadamente*: por ejemplo, la fecha deberá estar en el formato adecuado; si hay un vídeo, éste se mostrará de manera embebida; si es una imagen, se mostrará la imagen. Todo ello se puede detectar a través de la propiedad =type= del dato correspondiente.
+  - La URL del ítem está en su propiedad ~item.href~
+- Un *formulario de creación* de nuevos elementos. Puede estar visible siempre o bien estar oculto y en su lugar mostrar un botón de tipo "Crear" que se encargue de mostrarlo cuando se pulse. El formulario estará enlazado con el objeto ~collection.template~. Los tipos de campos de formulario deberán ser adecuados para cada tipo de datos. Para ello se debe utilizar el atributo ~type~ de cada dato, que indica si el dato es de tipo texto (~text~), o área de texto (~textarea~), por ejemplo. Para ello se pueden utilizar las [[https://vuejs.org/v2/guide/conditional.html][directivas condicionales de VueJS]]. *Todos los campos de formulario* serán *obligatorios*.
+    
+**** Métodos
+Se deben crear *métodos AJAX* para:
+- *Obtener una nueva colección a partir de una URL*. Cuando se pulse en un enlace del menú de navegación se deberá ejecutar una petición ~fetch~ que obtenga la nueva colección a partir de la URL seleccionada. Dicha colección se almacenará en la *variable de datos correspondiente* para actualizar la información que muestre la aplicación: si se pulsa en la lista de libros, la aplicación mostrará el listado de libros; si se pulsa en la lista de películas, la aplicación mostrará el listado de películas.
+- *Borrar un ítem*. Cuando se pulse en el botón de borrado de un ítem se deberá ejecutar una petición ~fetch~ para borrar dicho ítem. Un ítem se elimina realizando una petición ~DELETE~ a la *URL del ítem*.
+- *Editar un ítem*. Cuando se envíe el formulario de edición se deberá ejecutar una petición ~fetch~ para actualizar dicho ítem. Un ítem se edita enviando un objeto ~collection.template~ mediante una petición ~PUT~ a la *URL del ítem*. Dicho objeto ~collection.template~ debe *crearse* y contener una propiedad ~data~, que almacenará los datos actualizados del ítem. El objeto ~collection.template~ deberá *ser distinto* del objeto ~collection.template~ de la colección (ya que este último se utilizará para añadir elementos, pero no para editar).
+- *Crear un nuevo ítem*. Cuando se envíe el *formulario de creación* se deberá ejecutar una petición ~fetch~ para *crear un nuevo ítem*. Un nuevo ítem se crea enviando el objeto ~collection.template~ con los datos rellenos mediante una petición ~POST~ a la *URL de la colección*.
+
+**** Inicialización
+Cuando se lance la aplicación se deberá realizar la *inicialización* para cargar el punto de entrada a la API.
+
+Para ello se puede utilizar la función ~created~, [[https://v2.vuejs.org/v2/guide/instance.html#Instance-Lifecycle-Hooks][tal como se explica en la documentación de VueJS]]. En dicha función se deberá llamar al método de *obtener una nueva colección* a partir de la URL de entrada a la API, disponible en la variable global ~this.$APIURL~.
+
+Inicialmente, la aplicación cargará el punto de entrada de la API, ~/~. Dicho punto de entrada no tiene datos: únicamente contiene dos enlaces para acceder a ~/movies~ y a ~/books~. La aplicación debe ser capaz de *mostrar dichos enlaces* y *permitir navegar* a través de ellos. Si funciona bien, se verá que el *título de la colección* cambia de /Biblioteca Multimedia/ a /Películas/ o /Libros/; si no está bien hecho, o bien no se verán los títulos o bien el navegador cargará la URL de la API directamente en formato JSON.
+
+*** Mejoras
+    - Dividir la aplicación en *componentes* para una mejor estructura de la misma
+    - Utilizar [[https://vuejs.org/v2/guide/transitions.html][transiciones]] cuando se realicen cambios en la aplicación.
+      
+*** Aclaraciones
+    - Si se utiliza un elemento ~<form>~ para crear un formulario y dentro de éste se crea un elemento ~<button>~, dicho botón se considerará un *botón de envío de formulario* y al pulsarlo se enviará el formulario de manera convencional, por lo que la aplicación VueJS se recargará y no se ejecutarán correctamente los eventos asociados a dicho botón (no se enviarán los datos vía AJAX). Para que el botón se comporte como un botón sin funcionalidad por defecto asociada (esto es, un botón al que queremos asociar un evento de manera manual, como es nuestro caso), se deberá crear de la siguiente manera: ~<button type="button">~.
+
+** Formato de la entrega
+- Cada alumno dispondrá de un repositorio en GitHub para su trabajo personal. Dicho repositorio se creará automáticamente al hacer clic en el enlace y aceptar la tarea (/assignment/).
+- Todos los archivos de la práctica se guardarán en el repositorio y se subirán a GitHub periódicamente. Es conveniente ir subiendo los cambios aunque no sean definitivos.
+- Para cualquier tipo de *duda o consulta* se pueden abrir ~Issues~ haciendo referencia al profesor mediante el texto ~@pedroprieto~ dentro del texto del ~Issue~.
+- Una vez *finalizada* la tarea se debe crear un ~Issue~ en el repositorio haciendo referencia al profesor incluyendo el texto ~@pedroprieto~ dentro del ~Issue~.
+
+
